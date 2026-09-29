@@ -26,9 +26,9 @@ Docs, skills and pull request text follow [skills/plain-writing/SKILL.md](skills
 
 Do not put names of people or private accounts, tokens or home directory paths in any file or pull request text.
 
-## Report a bug on an untested setup
+## Report a bug
 
-The tested setup is one Linux machine with Claude Code. If something fails on another setup, open an issue with:
+If something fails on your setup, open an issue with:
 
 - your operating system and whether you ran in a virtual machine, container or remote session
 - the harness and version, Claude Code or Codex

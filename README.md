@@ -8,9 +8,7 @@ The default crew is named after characters from Prison Break, with a reviewer fr
 
 ## Before you start
 
-**Every persona is an AI agent, and agents make mistakes.** They can state something wrong with confidence, miss a real problem in review, or act on bad information. Review their work, check claims against the code or GitHub rather than an agent's report, and check before anything you can't undo: a merge, a release, a delete.
-
-Larceny has been tested with Claude Code on one Linux machine. Some routes below are marked untested. Codex can read the skills but is untested, see [Codex](#codex). A team runs several model sessions at once, so it uses your plan's limits faster than one agent. See [docs/cost-and-safety.md](docs/cost-and-safety.md).
+**Every persona is an AI agent, and agents make mistakes.** They can state something wrong with confidence, miss a real problem in review, or act on bad information. Review their work, check claims against the code or GitHub rather than an agent's report, and check before anything you can't undo: a merge, a release, a delete. A team runs several model sessions at once, so it uses your plan's limits faster than one agent. See [docs/cost-and-safety.md](docs/cost-and-safety.md).
 
 ## What you need
 
