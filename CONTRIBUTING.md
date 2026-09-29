@@ -62,9 +62,9 @@ Maintainers only. A contributor bumps the version in their own pull request, as 
 
 1. Merge the pull request that bumps `version` in `.claude-plugin/plugin.json`.
 2. From the merge commit, run `claude plugin tag --push` (add `-m "<message>"` for an annotation). It creates a `{name}--v{version}` tag (for example `larceny--v0.1.1`), validates that `plugin.json` and the marketplace entry agree on the version, and pushes it with `--push`. Use this instead of typing a bare `vX.Y.Z` tag by hand — a hand-typed tag skips that validation.
-3. Publish a GitHub Release from the tag, and use GitHub's "Generate release notes" to fill in the notes.
+3. Publish a GitHub Release from the tag. The release notes are that version's entry in `CHANGELOG.md`, not GitHub's generated notes.
 
-A `CHANGELOG.md` is optional, and this repo does not keep one. The release notes are the record.
+The repo keeps a `CHANGELOG.md`, newest release first. A release PR adds that version's entry.
 
 ## License
 
