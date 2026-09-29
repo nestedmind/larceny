@@ -6,6 +6,7 @@
 - The reviewer, advisor and teacher each have a named agent file (`amy`, `yoda`, `sara`) and a role alias (`reviewer`, `advisor`, `teacher`) (#133, #134).
 - `larceny:reviewer` is new, and the coordinator now dispatches it instead of a named reviewer (#134, #135).
 - Renaming the reviewer, advisor or teacher now swaps only the opening line of the prompt, which is copied from the spawn command (#135, #136).
+- The uninstall steps now list the leftover persona agent files in each project's `.claude/agents/` folder and the global crew file (#139).
 
 ## 0.1.2
 
