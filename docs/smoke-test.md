@@ -55,8 +55,8 @@ Run this last, on the clean machine from Part 2. The boxes are unticked because 
 - [ ] Run `/plugin uninstall larceny@larceny`, then press Esc to close the panel. Type `/larceny:`. None of `onboard`, `wake-up`, `spawn-reviewer`, `spawn-advisor` or `spawn-teacher` is offered. If they still appear, run `/reload-plugins` and check again, and note that you had to.
 - [ ] Ask "List the agent types you can dispatch whose names start with `larceny:`". None of the twelve `larceny:` agents is listed.
 - [ ] Run `/plugin marketplace remove larceny`. Run `/plugin marketplace list`. The `larceny` marketplace is gone.
-- [ ] In each project where you ran onboarding, delete the `.larceny/` folder and the `.gitignore` line that ignores it. If you added `{"agent": "larceny:scofield"}` to `.claude/settings.json`, remove that line.
 - [ ] In each project where you ran onboarding, check `.claude/agents/` for files named after the `coders:`, `reviewer:`, `advisor:` and `teacher:` values in `.larceny/config.md` (do this before you delete that file). Delete those files and leave any other agent files alone. Also delete `global-config.md` under `~/.config/larceny/` if you saved a crew globally.
+- [ ] In each project where you ran onboarding, delete the `.larceny/` folder and the `.gitignore` line that ignores it. If you added `{"agent": "larceny:scofield"}` to `.claude/settings.json`, remove that line.
 - [ ] Delete any worktrees and branches the test coder made, and any token files under `~/.config/larceny/` you created for the test. Delete those tokens on GitHub too.
 - [ ] Delete the test user or container.
 
