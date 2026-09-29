@@ -2,10 +2,6 @@
 
 This page lists what is untested or does not work yet. Experimentation continues, and contributions are welcome. See [CONTRIBUTING.md](../CONTRIBUTING.md).
 
-## Tested on one machine
-
-Everything here was tried on a single Linux machine with Claude Code. Nobody has run it on macOS, Windows, a virtual machine, a container or a remote development setup, so any of those may fail in ways this repo does not describe. If you try one, open an issue with what you did and what happened.
-
 ## Codex path is unverified
 
 The repo ships a Codex manifest at `.codex-plugin/plugin.json`, and it points at the same `skills/` directory that Claude Code reads. Codex was not installed on the machine that wrote it, so the load step has never been run. The README says the same.
