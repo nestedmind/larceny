@@ -20,7 +20,7 @@ Tested with a throwaway plugin that used a unique agent name, so no user-level a
 - A subagent that lists `onboarding` in `skills:` received the skill body, and so did one that lists `larceny:onboarding`. The short names in the agent files resolve.
 - A main-thread agent does not preload its `skills:` list. The skills appear in the session's skill list and load through the Skill tool, and the Skill tool accepted the short name `onboarding`. This is why `agents/scofield.md` tells Scofield to load its skills.
 
-The coders set `isolation: worktree` in their frontmatter, and we did not dispatch one to see that the plugin honours it. Part 3 checks it. We also did not test a real install through `/plugin install`, a fresh terminal session, or any interactive UI. The plugin does not ship a `settings.json`, because making Scofield the default agent for everyone who installs is opt-in. See [the README](../README.md#run-scofield-as-the-main-session).
+The coders set `isolation: worktree` in their frontmatter, and we did not dispatch one to see that the plugin honours it. Part 3 checks it. We also did not test a real install through `/plugin install`, a fresh terminal session, or any interactive UI. The plugin does not ship a `settings.json`, because making Scofield the default agent for everyone who installs is opt-in. See [the README](../README.md#coming-back-later).
 
 ## Part 2: the clean machine (for the owner)
 
@@ -50,7 +50,7 @@ Use a machine, container or user account that has Claude Code and `gh` but no co
 
 ## Tear down (for the owner)
 
-Run this last, on the clean machine from Part 2. The boxes are unticked because uninstall has not been run on this plugin. The commands come from the Claude Code plugin docs and are listed in [the README](../README.md#uninstall).
+Run this last, on the clean machine from Part 2. The boxes are unticked because uninstall has not been run on this plugin. The commands come from the Claude Code plugin docs and are listed in [uninstall.md](uninstall.md).
 
 - [ ] Run `/plugin uninstall larceny@larceny`, then press Esc to close the panel. Type `/larceny:`. None of `onboard`, `wake-up`, `spawn-reviewer`, `spawn-advisor` or `spawn-teacher` is offered. If they still appear, run `/reload-plugins` and check again, and note that you had to.
 - [ ] Ask "List the agent types you can dispatch whose names start with `larceny:`". None of the twelve `larceny:` agents is listed.

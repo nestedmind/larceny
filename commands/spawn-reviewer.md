@@ -3,7 +3,7 @@ description: Start the adversarial code reviewer (Amy, or your project's renamed
 argument-hint: "[project name, optional]"
 ---
 
-Start the adversarial code reviewer as a persistent agent. This command is named after the role, not the shipped default's name, because a project can rename this persona (see "Renaming the reviewer, advisor or teacher" in the README).
+Start the adversarial code reviewer as a persistent agent. This command is named after the role, not the shipped default's name, because a project can rename this persona (see "Renaming the reviewer, advisor or teacher" in `docs/renaming.md`).
 
 ## Resolve the persona first
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- The README is rewritten, with an org chart of the crew. Renaming and uninstall details moved to `docs/renaming.md` and `docs/uninstall.md`, and the GitHub-comment workaround moved to `docs/limitations.md` (#144).
+
 ## 0.1.4
 
 - The coordinator resolves its name quietly and goes straight to the status report. It only says how it resolved the name when you need to act. The old `scofield` skill name is removed: override files must say "follow the `coordinator` skill" (#140).
