@@ -21,12 +21,12 @@ cat > "$tmp/bin/gh" <<'EOF'
 #!/usr/bin/env bash
 echo "GH_TOKEN=${GH_TOKEN:-none} $*" >> "$FAKE_LOG"
 case "$*" in
-  "api user"*) echo "${FAKE_TOKEN_LOGIN:-tbag-ns}" ;;
+  "api user"*) echo "${FAKE_TOKEN_LOGIN:-amy-ns}" ;;
   "pr view"*) echo "abc1234def5678" ;;
   "api repo"*"/reviews"*"--input"*)
     cat > /dev/null 2>&1 || true
     echo "${FAKE_POST_RESPONSE:-{\"id\":77}}" ;;
-  "api"*"/reviews"*) echo "${FAKE_READBACK:-77 tbag-ns APPROVED abc1234def5678}" ;;
+  "api"*"/reviews"*) echo "${FAKE_READBACK:-77 amy-ns APPROVED abc1234def5678}" ;;
   "pr comment"*)
     while [ $# -gt 0 ]; do
       [ "$1" = "--body-file" ] && cp "$2" "$FAKE_BODY"
@@ -38,50 +38,50 @@ EOF
 chmod +x "$tmp/bin/gh"
 
 printf 'APPROVED at abc1234. Looks right.\n' > "$tmp/body.txt"
-printf 'sekrit-token-value\n' > "$tmp/cfg/gh-tbag-token"
-chmod 600 "$tmp/cfg/gh-tbag-token"
+printf 'sekrit-token-value\n' > "$tmp/cfg/gh-amy-token"
+chmod 600 "$tmp/cfg/gh-amy-token"
 
 run() { : > "$FAKE_LOG"; out="$("$script" "$@" 2>&1)"; rc=$?; }
 
 # 1. Token present: posts a formal review under the token, reads the author back.
-run tbag 5 approve "$tmp/body.txt"
+run amy 5 approve "$tmp/body.txt"
 [ "$rc" -eq 0 ] || bad "token present: exit $rc, expected 0 ($out)"
 grep -q 'GH_TOKEN=sekrit-token-value api repos/{owner}/{repo}/pulls/5/reviews' "$FAKE_LOG" \
   || bad "token present: review was not posted with the persona token"
-echo "$out" | grep -q 'tbag-ns' || bad "token present: output does not name the author"
+echo "$out" | grep -q 'amy-ns' || bad "token present: output does not name the author"
 echo "$out" | grep -q 'sekrit-token-value' && bad "token present: token printed"
 grep -q 'pr comment' "$FAKE_LOG" && bad "token present: posted a plain comment"
 
 # 2. Readback shows another login: the script must fail.
-FAKE_READBACK='77 mattoranking COMMENTED abc1234def5678' run tbag 5 approve "$tmp/body.txt"
+FAKE_READBACK='77 mattoranking COMMENTED abc1234def5678' run amy 5 approve "$tmp/body.txt"
 [ "$rc" -ne 0 ] || bad "wrong author on readback: exit 0, expected failure"
 
 # 3. Readback shows the right login on a stale commit: must fail.
-FAKE_READBACK='77 tbag-ns APPROVED 0000000000000' run tbag 5 approve "$tmp/body.txt"
+FAKE_READBACK='77 amy-ns APPROVED 0000000000000' run amy 5 approve "$tmp/body.txt"
 [ "$rc" -ne 0 ] || bad "stale commit on readback: exit 0, expected failure"
 
 # 4. Token file exists but is unreadable: refuse, post nothing.
 if [ "$(id -u)" -ne 0 ]; then
-  chmod 000 "$tmp/cfg/gh-tbag-token"
-  run tbag 5 approve "$tmp/body.txt"
+  chmod 000 "$tmp/cfg/gh-amy-token"
+  run amy 5 approve "$tmp/body.txt"
   [ "$rc" -ne 0 ] || bad "unreadable token: exit 0, expected failure"
   [ -s "$FAKE_LOG" ] && bad "unreadable token: gh was called"
-  chmod 600 "$tmp/cfg/gh-tbag-token"
+  chmod 600 "$tmp/cfg/gh-amy-token"
 fi
 
 # 5. No token file: comment via the ambient login, first line names the author.
-rm "$tmp/cfg/gh-tbag-token"
-run tbag 5 approve "$tmp/body.txt"
+rm "$tmp/cfg/gh-amy-token"
+run amy 5 approve "$tmp/body.txt"
 [ "$rc" -eq 0 ] || bad "no token: exit $rc, expected 0 ($out)"
 grep -q 'GH_TOKEN=none pr comment 5' "$FAKE_LOG" || bad "no token: did not post a plain comment under the ambient login"
 grep -q 'pulls/5/reviews' "$FAKE_LOG" && bad "no token: tried a formal review"
 first="$(head -n 1 "$FAKE_BODY" 2>/dev/null)"
-[ "$first" = "Tbag (reviewer persona), posted via the owner's login because no persona account is configured." ] \
+[ "$first" = "Amy (reviewer persona), posted via the owner's login because no persona account is configured." ] \
   || bad "no token: first line of the comment is '$first'"
 grep -q '^APPROVED at abc1234' "$FAKE_BODY" 2>/dev/null || bad "no token: comment lost the verdict text"
 
 # 6. Bad verdict word is rejected.
-run tbag 5 shrug "$tmp/body.txt"
+run amy 5 shrug "$tmp/body.txt"
 [ "$rc" -ne 0 ] || bad "bad verdict: exit 0, expected failure"
 
 exit "$fail"
