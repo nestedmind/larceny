@@ -180,17 +180,13 @@ The commands live in `commands/`, which Claude Code finds on its own. They are C
 
 ## Rename a persona
 
-A persona's name lives in the skill that defines it. To rename one, change the `name` field in the skill's `SKILL.md` frontmatter, rename its directory under `skills/` to match, and update any text in the skill body that uses the old name. This applies to the coordinator, whose identity lives in the `coordinator` skill (renamed from `scofield` in #105 — see "The `scofield` skill moved" below). It does not apply to the reviewer, advisor or teacher: each is defined by an agent file, not a skill of its own, so see [Renaming the reviewer, advisor or teacher](#renaming-the-reviewer-advisor-or-teacher) below instead.
-
-### The `scofield` skill moved
-
-Before #105, the coordinator's skill was named `scofield`, the same as the shipped default coordinator persona. It is now named `coordinator` (`skills/coordinator/SKILL.md`), so that loading it reads `Skill(larceny:coordinator)` regardless of what a project has renamed its coordinator to, instead of always printing the shipped default's name. `skills/scofield/SKILL.md` still exists, as a one-line stub that says the skill moved and to follow `coordinator` instead — this protects a project-level override file written before this rename (a body saying "Follow the `scofield` skill") from silently stopping being recognized once the plugin updates. Write new override files against `coordinator`; both phrasings resolve.
+A persona's name lives in the skill that defines it. To rename one, change the `name` field in the skill's `SKILL.md` frontmatter, rename its directory under `skills/` to match, and update any text in the skill body that uses the old name. This applies to the coordinator, whose identity lives in the `coordinator` skill. It does not apply to the reviewer, advisor or teacher: each is defined by an agent file, not a skill of its own, so see [Renaming the reviewer, advisor or teacher](#renaming-the-reviewer-advisor-or-teacher) below instead.
 
 ### Renaming the coordinator without editing the plugin
 
 For the coordinator specifically, there is a second way that does not touch any shipped file, confirmed in issue #70: add a project-level `.claude/agents/<name>.md` file whose body says something like "You are `<name>`, the coordinator. Follow the `coordinator` skill." Because it lives in your project, not the plugin, it survives plugin updates the way an edit to `agents/scofield.md` would not.
 
-`/larceny:wake-up` looks for this file before it does anything else. It scans `.claude/agents/*.md` for one whose body names the coordinator role and points at the `scofield` skill or the `coordinator` skill (both phrasings count, since the skill was renamed); if it finds exactly one, it acts under that name for the session instead of Scofield. With no such file, or with the coordinator's name left at its default, nothing changes. `agents/coordinator.md`, the generic alias for `claude --agent`, resolves the same way. This resolution is coordinator-only. Rename a reviewer, advisor or teacher with the method in [Renaming the reviewer, advisor or teacher](#renaming-the-reviewer-advisor-or-teacher) below.
+`/larceny:wake-up` looks for this file before it does anything else. It scans `.claude/agents/*.md` for one whose body names the coordinator role and points at the `coordinator` skill; if it finds exactly one, it acts under that name for the session instead of Scofield. With no such file, or with the coordinator's name left at its default, nothing changes. `agents/coordinator.md`, the generic alias for `claude --agent`, resolves the same way. This resolution is coordinator-only. Rename a reviewer, advisor or teacher with the method in [Renaming the reviewer, advisor or teacher](#renaming-the-reviewer-advisor-or-teacher) below.
 
 ### Renaming a coder without editing the plugin
 
