@@ -18,7 +18,7 @@ Resolve each name by `docs/crew-resolution.md`: `coders:` (first name) for the c
 3. Send the owner's message as written, plus a short neutral note of the conversation so far, written by you and free of your own opinion. If the owner says to leave the context out ("without the background", "cold"), send only their message. The persona's own context rules still apply: it names no project the owner has not named and reads nothing in a repository until told.
 4. Show the reply to the owner verbatim, under a label with the persona's name, for example `Sara:` on its own line, then the reply unedited. Never paraphrase, condense, merge or reorder it.
 5. You may add your own view after the reply, under your own label, kept clearly apart. Do not replace or trim theirs.
-6. When the owner names several at once ("all three of you", "ask Sara and Linc"), send each its message, then show every reply in full under its own label. The one you are answers directly, under your own label, and does not paraphrase the others.
+6. When the owner names several at once ("all three of you", "ask Sara and Yoda"), send each its message, then show every reply in full under its own label. The one you are answers directly, under your own label, and does not paraphrase the others.
 7. Persona-to-persona chatter needs an owner message driving it. Do not have brought-in personas talk to each other on their own.
 
 ## Single-channel setups (Discord and similar)

@@ -14,12 +14,14 @@ Scofield is the name of this role in the example team below. If your team uses o
 | Persona | Role |
 |---|---|
 | Scofield | Coordinator: plans, dispatches, reads every diff, handles review rounds 3 to 5, keeps the owner informed |
-| Tbag | Reviewer: reviews each pull request against its ticket and approves or requests changes |
+| Amy | Reviewer: reviews each pull request against its ticket and approves or requests changes |
 | Sucre, Mahone, Sheba, Whip | Coders: each implements one ticket per dispatch in its own worktree |
-| Linc | Advisor: gives opinions on decisions and tradeoffs, does not implement |
+| Yoda | Advisor: gives opinions on decisions and tradeoffs, does not implement |
 | Sara | Teacher: explains and checks understanding, does not implement |
 
 Nothing depends on these names. Rename them, drop the ones you do not use, or add others.
+
+Dispatch the reviewer with `subagent_type: larceny:reviewer`. That alias resolves to the configured reviewer (Amy by default), so the call stays the same after a rename.
 
 Three roles carry the rules below.
 
@@ -30,7 +32,7 @@ Three roles carry the rules below.
 ## Dispatching a ticket
 
 - Resolve the coder roster (`coders:`) before dispatching any coder, by `docs/crew-resolution.md`: the project's `.larceny/config.md`, else the global file if the project says `crew: global`, else the shipped default. Never read only the project file. `coders: default` (or the key missing everywhere) means the shipped names (`larceny:sheba`, `larceny:mahone`, `larceny:sucre`, `larceny:whip`). A customized roster names its own coders instead. This is a hard rule, not a suggestion: once the roster has replaced a shipped name, never dispatch that shipped default for coder work again, even though it stays listed and dispatchable in the raw Agent-tool listing (there is no mechanism to hide it, confirmed by #82). Dispatch the exact name the roster gives — never guess or fall back to a shipped name because the custom one is unfamiliar.
-- Resolve `models:` by `docs/crew-resolution.md` before dispatching any coder, following "Model overrides" in `docs/agent-lifecycle.md`. The same rule applies to every other persona spawn (Sara, Linc, Tbag, a renamed coordinator) through their own spawn commands and the auto-spawn path — this bullet is the coder-dispatch instance of that one shared rule, not a separate one.
+- Resolve `models:` by `docs/crew-resolution.md` before dispatching any coder, following "Model overrides" in `docs/agent-lifecycle.md`. The same rule applies to every other persona spawn (Sara, Yoda, Amy, a renamed coordinator) through their own spawn commands and the auto-spawn path — this bullet is the coder-dispatch instance of that one shared rule, not a separate one.
 - One ticket, one subagent, one worktree, one branch, one pull request. A subagent never pushes to the main branch.
 - Give the ticket number and tell the subagent to read the ticket itself (`gh issue view <n>`). Do not summarize the ticket in the dispatch prompt, because a summary can be wrong. The subagent treats the issue text as the truth and tells you where your prompt differs from it.
 - Give the subagent operating context: what has already landed, which conventions exist (test layout, lint rules), and any infrastructure trouble spots in the environment.
@@ -63,7 +65,7 @@ Never print, log or commit the contents of a token file. Do not echo it, do not 
 
 ## Addressing a persona
 
-Message a running persona by its name (`sara`, `linc`, `tbag`): `SendMessage({to: "tbag", ...})` resolves directly, no id needed. If a persona a message names is not in `ListAgents`, spawn it first with its founding prompt from its role's spawn command (`commands/spawn-reviewer.md`, `commands/spawn-advisor.md` or `commands/spawn-teacher.md`), then relay. See "Addressing a persona" and "Auto-spawn on first mention" in `docs/agent-lifecycle.md` for the convention and the full procedure; this skill does not repeat them.
+Message a running persona by its name (`sara`, `yoda`, `amy`): `SendMessage({to: "amy", ...})` resolves directly, no id needed. If a persona a message names is not in `ListAgents`, spawn it first with its founding prompt from its role's spawn command (`commands/spawn-reviewer.md`, `commands/spawn-advisor.md` or `commands/spawn-teacher.md`), then relay. See "Addressing a persona" and "Auto-spawn on first mention" in `docs/agent-lifecycle.md` for the convention and the full procedure; this skill does not repeat them.
 
 ## Reviewer protocol
 
