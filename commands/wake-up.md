@@ -6,7 +6,7 @@ Act as the project's coordinator in this session, the main session, so the perso
 
 ## Resolve the coordinator's name first
 
-This command is named after Scofield, the shipped default, but a project can rename its coordinator (see "Rename a persona" in the README): a project-level `.claude/agents/<name>.md` file that says something like "You are `<name>`, the coordinator. Follow the `coordinator` skill." Do not assume the name is Scofield. Resolve it here, before step 1 below:
+This command is named after Scofield, the shipped default, but a project can rename its coordinator (see `docs/renaming.md`): a project-level `.claude/agents/<name>.md` file that says something like "You are `<name>`, the coordinator. Follow the `coordinator` skill." Do not assume the name is Scofield. Resolve it here, before step 1 below:
 
 1. List `.claude/agents/*.md` in the current project (the project's own directory, not this plugin's `agents/`). Read each file's body.
 2. A file counts as a coordinator override when its body says the persona plays **the coordinator** role and tells it to follow the **`coordinator`** skill (match on meaning, not exact wording — "You are Jon Snow, the coordinator, follow the `coordinator` skill" and small variations all count).
