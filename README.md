@@ -59,7 +59,7 @@ Run `/larceny:spawn-teacher`. It starts Sara, a teacher, as a background agent n
 
 - Claude Code, with the plugin installed as above.
 - For `/larceny:wake-up` and `claude --agent larceny:scofield` (or its alias `claude --agent larceny:coordinator`): a `gh` login, a git repository, and access to its GitHub repo, the same as onboarding.
-- For starting the spawn commands (`/larceny:spawn-teacher`, `/larceny:spawn-advisor`, `/larceny:spawn-reviewer`): nothing beyond the plugin. The command files call no `gh` command. A spawned Tbag reviews pull requests, so it needs a `gh` login to do that work.
+- For starting the spawn commands (`/larceny:spawn-teacher`, `/larceny:spawn-advisor`, `/larceny:spawn-reviewer`): nothing beyond the plugin. The command files call no `gh` command. A spawned Amy reviews pull requests, so it needs a `gh` login to do that work.
 - For `/larceny:onboard`: a `gh` login, a git repository, and access to its GitHub repo. Onboarding checks all three before it writes anything.
 - For the full team on a project (coordinator, reviewer, coders): one ordinary GitHub login is enough, and the project must be a git repository with at least one commit, because each coder works in its own worktree. Persona accounts and tokens are optional. Without them the reviewer states its verdict in a comment, because GitHub does not let one login approve its own pull request.
 - A project board: GitHub Projects is the tested board. Linear through its MCP server is untested; the spike in [#72](https://github.com/nestedmind/larceny/issues/72) will test it.
@@ -69,10 +69,13 @@ Run `/larceny:spawn-teacher`. It starts Sara, a teacher, as a background agent n
 
 ## The team
 
-The plugin ships six agents in `agents/`. Each carries the skills it needs, and none needs a GitHub account of its own.
+The plugin ships agent files in `agents/`. Each carries the skills it needs, and none needs a GitHub account of its own.
 
 - `scofield` coordinates: it plans, dispatches coders and reports to you.
-- `tbag` reviews pull requests against their tickets.
+- `amy` is the adversarial reviewer. She reviews pull requests against their tickets.
+- `yoda` is the senior advisor. He gives advice when you consult him.
+- `sara` is the teacher. She explains in steps.
+- `reviewer`, `advisor` and `teacher` are role aliases that resolve to Amy, Yoda and Sara, or to your renamed replacements.
 - `sucre`, `mahone`, `sheba` and `whip` are coders. Each takes one ticket per dispatch, works in its own worktree, opens a pull request and merges it only after an approval.
 
 Claude Code lists a plugin's agents under the plugin name, so dispatch them as `larceny:sucre` and so on. The coders read the project's test and lint commands from `.larceny/config.md`. That folder is gitignored, so a coder's fresh worktree does not hold it. The coder reads it in the main checkout, or takes the commands from the dispatch prompt.
@@ -122,7 +125,7 @@ Run `/larceny:onboard` in your project. Scofield checks that `gh` is logged in, 
 
 ### Save your crew once, use it in every project
 
-If you customize the crew (your own names, renamed Tbag, Linc or Sara, or a different model split) and no global file exists yet, onboarding asks once: save this as your default crew for every project on this machine, or keep it to this project. Saving writes `global-config.md` in `~/.config/larceny/` (or in `LARCENY_CONFIG_DIR`, the same directory as the persona tokens) and puts your renamed personas' files in `~/.claude/agents/`. The project records `crew: global`.
+If you customize the crew (your own names, renamed reviewer, advisor or teacher, or a different model split) and no global file exists yet, onboarding asks once: save this as your default crew for every project on this machine, or keep it to this project. Saving writes `global-config.md` in `~/.config/larceny/` (or in `LARCENY_CONFIG_DIR`, the same directory as the persona tokens) and puts your renamed personas' files in `~/.claude/agents/`. The project records `crew: global`.
 
 In a new project, onboarding finds that file and offers to use it (the default) or set up a different crew just for that project. Choosing the saved crew asks no person and no crew question: it goes straight to reading the project's test, lint and build commands and to the optional board, ruleset and identities steps.
 
@@ -143,24 +146,24 @@ Without persona accounts the reviewer states its verdict in a comment, because G
 
 ## Spawn commands
 
-Three personas run as long-lived agents that you message across a session. A slash command starts each one, named after the role it fills rather than the shipped default's name (since #105), so the command keeps working whether the project runs the shipped default or a renamed replacement — see "Renaming Tbag, Linc or Sara without editing the plugin" below. Plugin commands carry the plugin name, so the forms are:
+Three personas run as long-lived agents that you message across a session. A slash command starts each one, named after the role it fills rather than the shipped default's name, so the command keeps working whether the project runs the shipped default or a renamed replacement. See [Renaming the reviewer, advisor or teacher](#renaming-the-reviewer-advisor-or-teacher) below. Plugin commands carry the plugin name, so the forms are:
 
-- `/larceny:spawn-reviewer` starts the adversarial code reviewer (Tbag by default).
-- `/larceny:spawn-advisor` starts the senior advisor (Linc by default).
+- `/larceny:spawn-reviewer` starts the adversarial code reviewer (Amy by default).
+- `/larceny:spawn-advisor` starts the senior advisor (Yoda by default).
 - `/larceny:spawn-teacher` starts the teacher (Sara by default).
 
 Each command starts an agent with that persona's founding prompt and tells it to ignore the project around it. Add a project name after the command, such as `/larceny:spawn-advisor my-app`, to give the agent one project for the conversation. Without a name, the agent asks.
 
-Each command gives the agent a name, such as `tbag`, and the agent is reachable by that name for the rest of the session, no id needed.
+Each command gives the agent a name, such as `amy`, and the agent is reachable by that name for the rest of the session, no id needed.
 
-To talk to the agent, ask the main session to relay: "Ask Tbag: review PR 12" (using whichever name the agent actually resolved to). The main session calls `SendMessage` with the name. If the persona is not running yet, the session starts it first, using the same founding prompt as its role's spawn command, then delivers the message. See "Addressing a persona" and "Auto-spawn on first mention" in [docs/agent-lifecycle.md](docs/agent-lifecycle.md).
+To talk to the agent, ask the main session to relay: "Ask Amy: review PR 12" (using whichever name the agent actually resolved to). The main session calls `SendMessage` with the name. If the persona is not running yet, the session starts it first, using the same founding prompt as its role's spawn command, then delivers the message. See "Addressing a persona" and "Auto-spawn on first mention" in [docs/agent-lifecycle.md](docs/agent-lifecycle.md).
 
 ### Talking to the teacher and advisor directly
 
 You can also start a session as the teacher or the advisor, with no coordinator in between:
 
 - `claude --agent larceny:teacher` (Sara by default)
-- `claude --agent larceny:advisor` (Linc by default)
+- `claude --agent larceny:advisor` (Yoda by default)
 - `claude --agent larceny:coordinator` (Scofield by default)
 
 Each resolves to your customized persona or the shipped default, by [docs/crew-resolution.md](docs/crew-resolution.md), and keeps the founding prompt's context rules (no project until you name one, nothing read in a repository until told).
@@ -175,7 +178,7 @@ The commands live in `commands/`, which Claude Code finds on its own. They are C
 
 ## Rename a persona
 
-A persona's name lives in the skill that defines it. To rename one, change the `name` field in the skill's `SKILL.md` frontmatter, rename its directory under `skills/` to match, and update any text in the skill body that uses the old name. This applies to the coordinator, whose identity lives in the `coordinator` skill (renamed from `scofield` in #105 — see "The `scofield` skill moved" below). It does not apply to Tbag, Linc or Sara: their behavior is written directly in their spawn commands, not in a skill of their own, so see "Renaming Tbag, Linc or Sara without editing the plugin" below instead.
+A persona's name lives in the skill that defines it. To rename one, change the `name` field in the skill's `SKILL.md` frontmatter, rename its directory under `skills/` to match, and update any text in the skill body that uses the old name. This applies to the coordinator, whose identity lives in the `coordinator` skill (renamed from `scofield` in #105 — see "The `scofield` skill moved" below). It does not apply to the reviewer, advisor or teacher: each is defined by an agent file, not a skill of its own, so see [Renaming the reviewer, advisor or teacher](#renaming-the-reviewer-advisor-or-teacher) below instead.
 
 ### The `scofield` skill moved
 
@@ -185,7 +188,7 @@ Before #105, the coordinator's skill was named `scofield`, the same as the shipp
 
 For the coordinator specifically, there is a second way that does not touch any shipped file, confirmed in issue #70: add a project-level `.claude/agents/<name>.md` file whose body says something like "You are `<name>`, the coordinator. Follow the `coordinator` skill." Because it lives in your project, not the plugin, it survives plugin updates the way an edit to `agents/scofield.md` would not.
 
-`/larceny:wake-up` looks for this file before it does anything else. It scans `.claude/agents/*.md` for one whose body names the coordinator role and points at the `scofield` skill or the `coordinator` skill (both phrasings count, since the skill was renamed); if it finds exactly one, it acts under that name for the session instead of Scofield. With no such file, or with the coordinator's name left at its default, nothing changes. `agents/coordinator.md`, the generic alias for `claude --agent`, resolves the same way. This resolution is coordinator-only. Rename a reviewer, advisor or teacher with the method in "Renaming Tbag, Linc or Sara without editing the plugin" below.
+`/larceny:wake-up` looks for this file before it does anything else. It scans `.claude/agents/*.md` for one whose body names the coordinator role and points at the `scofield` skill or the `coordinator` skill (both phrasings count, since the skill was renamed); if it finds exactly one, it acts under that name for the session instead of Scofield. With no such file, or with the coordinator's name left at its default, nothing changes. `agents/coordinator.md`, the generic alias for `claude --agent`, resolves the same way. This resolution is coordinator-only. Rename a reviewer, advisor or teacher with the method in [Renaming the reviewer, advisor or teacher](#renaming-the-reviewer-advisor-or-teacher) below.
 
 ### Renaming a coder without editing the plugin
 
@@ -193,19 +196,24 @@ Coders work the same way, since #77 split each shipped coder (`agents/mahone.md`
 
 Unlike the coordinator, a renamed coder is not resolved automatically at invocation time — a coder is a fresh subagent dispatch, not a session someone starts by name. Instead, the `coordinator` skill resolves `coders:` before every dispatch (the project's `.larceny/config.md`, else your global crew if the project follows it, see [docs/crew-resolution.md](docs/crew-resolution.md)) and uses the roster's names.
 
-### Renaming Tbag, Linc or Sara without editing the plugin
+### Renaming the reviewer, advisor or teacher
 
-Since #105, Tbag, Linc and Sara each have a customization mechanism too, distinct from the coordinator's and the coders' because neither of those personas is defined by a skill of its own: their behavior is the founding prompt written directly into `commands/spawn-reviewer.md`, `commands/spawn-advisor.md` and `commands/spawn-teacher.md`.
+The reviewer (Amy by default), the advisor (Yoda by default) and the teacher (Sara by default) each ship as two files in `agents/`:
 
-To rename one, write a project-level `.claude/agents/<name>.md` file with `name: <name>` in its frontmatter and, as its body, that persona's founding prompt (copy it from the shipped spawn command) with every mention of the shipped name (Tbag, Linc or Sara) replaced by `<name>`. Then record the new name in `.larceny/config.md`: `reviewer: <name>` for a renamed Tbag, `advisor: <name>` for a renamed Linc, or `teacher: <name>` for a renamed Sara. Each of the three spawn commands is named after the role, not the persona, exactly so it keeps working under the same name whether it resolves to the shipped default or your override: it resolves the matching config key the same way, and when that key names a persona, reads that persona's founding prompt from its `.claude/agents/<name>.md` file instead of using the shipped one. `default`, or the key missing, means the shipped default, unchanged. This mirrors the coder mechanism above; unlike the coordinator, none of the three is resolved by scanning file contents for a role phrase, because the config key already says which role each line customizes.
+- The named file: `agents/amy.md`, `agents/yoda.md` and `agents/sara.md`, dispatched as `larceny:amy`, `larceny:yoda` and `larceny:sara`. Each holds that persona's founding prompt.
+- The role alias: `agents/reviewer.md`, `agents/advisor.md` and `agents/teacher.md`, dispatched as `larceny:reviewer`, `larceny:advisor` and `larceny:teacher`. Each resolves the configured persona and acts as it, so `claude --agent larceny:reviewer` works whether the project runs Amy or a replacement.
+
+The spawn commands `commands/spawn-reviewer.md`, `commands/spawn-advisor.md` and `commands/spawn-teacher.md` are named after the role for the same reason.
+
+To rename one, write a project-level `.claude/agents/<name>.md` file with `name: <name>` in its frontmatter and, as its body, that persona's founding prompt (copy it from the shipped named file) with every mention of the shipped name (Amy, Yoda or Sara) replaced by `<name>`. Then record the new name in `.larceny/config.md`: `reviewer: <name>` for a renamed Amy, `advisor: <name>` for a renamed Yoda, or `teacher: <name>` for a renamed Sara. The role alias and the spawn command each resolve the matching config key the same way, and when that key names a persona, read its founding prompt from its `.claude/agents/<name>.md` file instead of using the shipped one. `default`, or the key missing, means the shipped default, unchanged. This mirrors the coder mechanism above. Unlike the coordinator, none of the three is resolved by scanning file contents for a role phrase, because the config key already says which role each line customizes.
 
 ### The hiding ceiling
 
 None of this makes a shipped default agent disappear. #82 confirmed, on a real installed copy of the plugin, that `larceny:sheba`, `larceny:mahone`, `larceny:sucre`, `larceny:whip` and `larceny:scofield` stay listed and directly dispatchable through the Agent tool for as long as the plugin is installed, no matter what a project names its replacements. There is no file-naming or precedence trick that hides or removes a shipped agent type — only the coordinator's own automated dispatch is guaranteed to use a customized roster's names, because it reads them from config instead of guessing. A human picking an agent by name from the Agent-tool UI can still reach a shipped default directly.
 
-The three spawn commands themselves were fully renamed, not aliased: `/larceny:spawn-tbag`, `/larceny:spawn-linc` and `/larceny:spawn-sara` no longer exist as of this version, replaced by `/larceny:spawn-reviewer`, `/larceny:spawn-advisor` and `/larceny:spawn-teacher` (matching #83's precedent for `wake-scofield` → `wake-up`, which also shipped no alias). This differs from the `scofield` skill's stub above because a slash command has no project-level override file that could point at the old name and go stale — nothing on a user's machine depends on the old command name continuing to resolve. What the hiding ceiling does still apply to here: `agents/tbag.md`, the agent type Tbag can also be dispatched under directly (separately from the persistent-agent spawn commands), still ships unchanged and stays reachable by that name through the Agent tool, the same as every other shipped default identity.
+The shipped named files (`larceny:amy`, `larceny:yoda` and `larceny:sara`) stay listed and reachable through the Agent tool in the same way, whatever a project names its replacements.
 
-That leaves a collision-ambiguity risk, confirmed by direct test: a project's own bare name (say `arya`) and a hypothetical future plugin version shipping the same name namespaced (`larceny:arya`) coexist independently, with no overwrite and no error. This is not a functional break — the coordinator's own dispatch stays correct either way, because it reads the exact roster name from config — but it means a human could pick the wrong one from the Agent-tool UI by name alone. Avoid choosing a coder or coordinator name that could later read ambiguously against a namespaced plugin name, and prefer a name clearly distinct from the shipped cast (Scofield, Tbag, Sucre, Mahone, Sheba, Whip).
+That leaves a collision-ambiguity risk, confirmed by direct test: a project's own bare name (say `arya`) and a hypothetical future plugin version shipping the same name namespaced (`larceny:arya`) coexist independently, with no overwrite and no error. This is not a functional break — the coordinator's own dispatch stays correct either way, because it reads the exact roster name from config — but it means a human could pick the wrong one from the Agent-tool UI by name alone. Avoid choosing a coder or coordinator name that could later read ambiguously against a namespaced plugin name, and prefer a name clearly distinct from the shipped cast (Scofield, Amy, Yoda, Sara, Sucre, Mahone, Sheba, Whip).
 
 A different kind of collision, also confirmed by direct test: installing two marketplaces that both ship a plugin literally named `larceny` collides in the dispatch namespace too — only one set of `larceny:*` agent types is exposed, not two side by side. This needs two different marketplace sources both choosing the same plugin name, unlikely in ordinary use, but worth knowing if you ever add a second source.
 
@@ -219,9 +227,9 @@ Each persona's model is a cost decision as much as a technical one, so onboardin
 |---|---|---|
 | Mahone / Sheba / Sucre / Whip | Coder | Sonnet |
 | Scofield | Coordinator | Opus |
-| Tbag | Adversarial reviewer | Opus |
+| Amy | Adversarial reviewer | Opus |
 | Sara | Teacher | Opus |
-| Linc | Senior advisor | Fable |
+| Yoda | Senior advisor | Fable |
 
 This is a recommendation, not a requirement. During onboarding you choose to keep it, run every persona on the harness's own default model, or override one or more personas individually; see step 8 in `skills/onboarding/SKILL.md`. The choice is recorded in the `models:` line of `.larceny/config.md` (or of your global crew file, see "Save your crew once, use it in every project"), separately from `coders:`, `reviewer:`, `advisor:` and `teacher:` (renaming a persona and picking its model are independent choices, which is why onboarding asks the naming questions first and the model question last — see the onboarding skill's "Config format" section for the exact syntax, including what to do if you rename a persona that already has a `models:` override). Every way a persona gets spawned reads `models:` and passes any override as an explicit `model` parameter, taking precedence over the shipped default: a coder dispatch, a persistent persona's own role-based spawn command, and the auto-spawn path all apply it the same way — see "Model overrides" in [docs/agent-lifecycle.md](docs/agent-lifecycle.md).
 

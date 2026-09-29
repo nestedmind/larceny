@@ -6,9 +6,9 @@ This page checks that installing the plugin once gives a working team. Part 1 is
 
 Run these from a clone of the repo. They passed on one Linux machine with Claude Code 2.1.278.
 
-- [x] `scripts/check-agents.sh` prints `ok: agent definitions pass`. It checks that each of the six named personas exists, that its name matches its file, that every skill in its `skills:` list exists under `skills/`, and that no agent file holds a home path, an account name or another persona's token path.
+- [x] `scripts/check-agents.sh` prints `ok: agent definitions pass`. It checks that each of the eight named personas exists, that its name matches its file, that every skill in its `skills:` list exists under `skills/`, and that no agent file holds a home path, an account name or another persona's token path.
 - [x] `claude plugin validate .` passes.
-- [x] `claude -p --plugin-dir . "List the agent types whose name starts with larceny:"` lists `larceny:scofield`, `larceny:coordinator`, `larceny:tbag`, `larceny:sucre`, `larceny:mahone`, `larceny:sheba` and `larceny:whip`.
+- [x] `claude -p --plugin-dir . "List the agent types whose name starts with larceny:"` lists `larceny:scofield`, `larceny:coordinator`, `larceny:amy`, `larceny:yoda`, `larceny:sara`, `larceny:reviewer`, `larceny:advisor`, `larceny:teacher`, `larceny:sucre`, `larceny:mahone`, `larceny:sheba` and `larceny:whip`.
 
 ## What was tested about the default agent and skill names
 
@@ -27,7 +27,7 @@ The coders set `isolation: worktree` in their frontmatter, and we did not dispat
 Use a machine, container or user account that has Claude Code and `gh` but no copy of this repo, no `~/.claude/agents/` files from this project, no `.larceny/` folder and no tokens.
 
 - [ ] Add the marketplace and install: `/plugin marketplace add nestedmind/larceny`, then `/plugin install larceny@larceny`. Both succeed with no manual copying.
-- [ ] Restart Claude Code and ask: "List the agent types you can dispatch whose names start with `larceny:`". The answer lists `larceny:scofield`, `larceny:coordinator`, `larceny:tbag`, `larceny:sucre`, `larceny:mahone`, `larceny:sheba` and `larceny:whip`. (Not yet run in an interactive session. The `/agents` command no longer opens a list, so this prompt replaces it. Part 1 uses a similar prompt headless.)
+- [ ] Restart Claude Code and ask: "List the agent types you can dispatch whose names start with `larceny:`". The answer lists `larceny:scofield`, `larceny:coordinator`, `larceny:amy`, `larceny:yoda`, `larceny:sara`, `larceny:reviewer`, `larceny:advisor`, `larceny:teacher`, `larceny:sucre`, `larceny:mahone`, `larceny:sheba` and `larceny:whip`. (Not yet run in an interactive session. The `/agents` command no longer opens a list, so this prompt replaces it. Part 1 uses a similar prompt headless.)
 - [ ] Type `/larceny:`. `onboard`, `wake-up`, `spawn-reviewer`, `spawn-advisor` and `spawn-teacher` are offered.
 - [ ] Ask "which skills do you have from the larceny plugin?" The answer lists the skills under `skills/`.
 
@@ -38,7 +38,7 @@ Use a machine, container or user account that has Claude Code and `gh` but no co
 - [ ] Repeat the previous check with `claude --agent larceny:coordinator` instead. The session behaves the same way.
 - [ ] Add `{"agent": "larceny:scofield"}` to the project's `.claude/settings.json` and start a plain `claude`. The main thread is Scofield. Remove the line again if you do not want it.
 - [ ] Run `/larceny:onboard` with a real person answering. This is the clean-machine run that the onboarding work (#19) closed without. Check that `.larceny/config.md` and `.larceny/status.md` exist, that `.larceny/` is in `.gitignore`, that the persona-account steps can be skipped, and that a second run of the command shows the saved answers and asks before changing any.
-- [ ] Run `/larceny:spawn-reviewer`. It confirms Tbag is running (the shipped default, since no `reviewer:` override is configured). Ask the main session to relay a message ("Ask Tbag: ...") and check that a reply comes back, with no id needed.
+- [ ] Run `/larceny:spawn-reviewer`. It confirms Amy is running (the shipped default, since no `reviewer:` override is configured). Ask the main session to relay a message ("Ask Amy: ...") and check that a reply comes back, with no id needed.
 - [ ] Without running any spawn command, ask the main session to relay a message to a persona that is not running yet ("Ask Sara: ..."). Check that it spawns Sara first, using her founding prompt, then delivers the message, and that it says it did the extra step.
 - [ ] Sign off one small ticket and ask Scofield to dispatch a coder. Check that the coder reads the ticket, works in a worktree, opens a pull request, messages the reviewer, and stops without merging until an approval arrives. Check that the coder finds the project's commands, though `.larceny/` is missing from its worktree.
 
