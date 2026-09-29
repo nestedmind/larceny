@@ -2,7 +2,7 @@
 
 Larceny is a Claude Code plugin that gives you a small software team made of AI agents. You talk to one coordinator. He breaks your request into small tickets, hands them to coding agents who work in parallel, and makes sure an adversarial reviewer checks every pull request before it merges. Every change has a ticket, a branch, a pull request and a review thread on GitHub, so you can trace it back later.
 
-The default crew is named after characters from Prison Break, with a reviewer from Brooklyn Nine-Nine and an advisor from Star Wars. You can rename any of them.
+The default crew is named after characters from the TV series Prison Break, with a reviewer from Brooklyn Nine-Nine and an advisor from Star Wars. You can rename any of them.
 
 ![Larceny org chart](docs/images/org-chart.png)
 
