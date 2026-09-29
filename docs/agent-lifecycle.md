@@ -46,15 +46,15 @@ The example team maps onto the rule like this.
 
 | Persona | Role | Lifecycle | Why |
 |---|---|---|---|
-| Tbag | Standing reviewer | Persistent | Reviews every pull request and gains from keeping its standards and the project's history |
-| Linc | Advisor | Persistent | The human consults it repeatedly, and it remembers earlier advice |
+| Amy | Standing reviewer | Persistent | Reviews every pull request and gains from keeping its standards and the project's history |
+| Yoda | Advisor | Persistent | The human consults it repeatedly, and it remembers earlier advice |
 | Sara | Teacher | Persistent | Its explanations build on what the learner already covered |
 | Sucre, Mahone, Sheba, Whip | Coders | Fresh dispatch | One ticket each, read from source, isolated, reported once |
 | Scofield | Coordinator | Your call | See below |
 
 The coordinator sits between the two patterns. It lives across the whole project, so it usually runs as the main session, and it has to protect its context from filling up. `skills/coordinator/SKILL.md` covers this by keeping coordination state in a status file outside the session, so a compaction does not lose it.
 
-To map your own team, sort each role by its usage. A role that several agents or people address over time, and that gains from memory, goes with Tbag, Linc and Sara. A role that takes one bounded task and reports goes with the coders.
+To map your own team, sort each role by its usage. A role that several agents or people address over time, and that gains from memory, goes with Amy, Yoda and Sara. A role that takes one bounded task and reports goes with the coders.
 
 ## Roles that could go either way
 
@@ -62,15 +62,15 @@ A role can change pattern as its use changes. A reviewer that a project calls on
 
 ## Addressing a persona
 
-Once a spawn command starts a persona with `name` set (`sara`, `linc`, `tbag`), message it by that name from then on: `SendMessage({to: "sara", ...})` resolves directly, and no id is needed. `SendMessage`'s own tool spec says it plainly: "the name IS the address; there is no separate address syntax." This was checked in practice, not just assumed from the spec: a session that spawned an agent named `sara` could still reach it by that bare name later in the same session, with its id never used.
+Once a spawn command starts a persona with `name` set (`sara`, `yoda`, `amy`), message it by that name from then on: `SendMessage({to: "sara", ...})` resolves directly, and no id is needed. `SendMessage`'s own tool spec says it plainly: "the name IS the address; there is no separate address syntax." This was checked in practice, not just assumed from the spec: a session that spawned an agent named `sara` could still reach it by that bare name later in the same session, with its id never used.
 
-The convention for how a person or another agent asks for this: name the persona in plain text, for example "Ask Sara: <question>" or "Tell Tbag to review PR 12". Do not use an `@name` prefix. GitHub's own `@`-mentions on issues and pull requests do not reach a running session (see the Limitations section of the README), and giving `@name` a second, working meaning here would blur two different things that look the same. Plain-text naming is the one convention; use it everywhere a persona is addressed.
+The convention for how a person or another agent asks for this: name the persona in plain text, for example "Ask Sara: <question>" or "Tell Amy to review PR 12". Do not use an `@name` prefix. GitHub's own `@`-mentions on issues and pull requests do not reach a running session (see the Limitations section of the README), and giving `@name` a second, working meaning here would blur two different things that look the same. Plain-text naming is the one convention; use it everywhere a persona is addressed.
 
 If a future Claude Code build stops honoring `name` on the `Agent` tool, a spawn command falls back to reporting the agent's id and the addressing above stops working until then; nothing else in this section changes.
 
 ## Spawn commands are named by role, not by persona
 
-Since #105, the three commands that start Tbag, Linc and Sara are named after the role each fills, not the shipped default's name: `commands/spawn-reviewer.md`, `commands/spawn-advisor.md` and `commands/spawn-teacher.md`. This is so the command keeps working, under the same name, whether a project runs the shipped default persona or a renamed one — the same way `/larceny:wake-up` is named after the coordinator role rather than "Scofield". Each command resolves the shipped default (Tbag, Linc or Sara) or a project's configured replacement (the `reviewer:`, `advisor:` or `teacher:` key as [crew-resolution.md](crew-resolution.md) resolves it, with the founding prompt in a `.claude/agents/<name>.md` file, project-level or user-level) before it spawns anything. See "Renaming Tbag, Linc or Sara without editing the plugin" in the README for the full mechanism.
+The three commands that start the reviewer, the advisor and the teacher are named after the role each fills, not the shipped default's name: `commands/spawn-reviewer.md`, `commands/spawn-advisor.md` and `commands/spawn-teacher.md`. This is so the command keeps working, under the same name, whether a project runs the shipped default persona or a renamed one, the same way `/larceny:wake-up` is named after the coordinator role rather than "Scofield". Each command resolves the shipped default (Amy, Yoda or Sara) or a project's configured replacement (the `reviewer:`, `advisor:` or `teacher:` key as [crew-resolution.md](crew-resolution.md) resolves it, with the founding prompt in a `.claude/agents/<name>.md` file, project-level or user-level) before it spawns anything. See "Renaming the reviewer, advisor or teacher" in the README for the full mechanism.
 
 ## Model overrides
 
@@ -80,11 +80,11 @@ Every way an agent gets spawned — a coder dispatch, a persistent persona start
 - `models: harness-default`: pass no explicit `model` parameter to the `Agent` call for any persona, so the harness's own default applies instead of the shipped default.
 - Either of the above can carry indented `<persona name>: <model>` override lines. When the persona being spawned has one, pass that model explicitly instead of the baseline for that mode. A persona with no override line keeps the baseline.
 
-This applies by persona name, not by mechanism, so Sara, Linc and Tbag are covered exactly like a coder or the coordinator: the `model` bullet a spawn command resolves to (shipped default or project override) is the baseline this override replaces, never a value to pass unconditionally.
+This applies by persona name, not by mechanism, so Amy, Yoda and Sara are covered exactly like a coder or the coordinator: the `model` bullet a spawn command resolves to (shipped default or project override) is the baseline this override replaces, never a value to pass unconditionally.
 
 ## Auto-spawn on first mention
 
-A session does not need a separate, explicit spawn step before it can relay to a persona. When a request names a persona that is not currently running ("ask Sara ...", "tell Linc ...") and `ListAgents` shows no live agent with that name:
+A session does not need a separate, explicit spawn step before it can relay to a persona. When a request names a persona that is not currently running ("ask Sara ...", "tell Yoda ...") and `ListAgents` shows no live agent with that name:
 
 1. Find that persona's founding prompt. For the reviewer, advisor or teacher role, it lives in that role's spawn command (`commands/spawn-reviewer.md`, `commands/spawn-advisor.md` or `commands/spawn-teacher.md`), which resolves the shipped default or a configured custom name itself (through [crew-resolution.md](crew-resolution.md)) — see "Spawn commands are named by role, not by persona" above. For a coder or the coordinator, it lives in the project's own definition of the persona if it has no spawn command.
 2. Call `Agent` with the `name`, `description` and `prompt` the spawn command resolves to, filling in the project line the way the command describes. For `model`, apply "Model overrides" above instead of following the spawn command's `model` bullet unconditionally.

@@ -28,7 +28,7 @@ Claude Code can refuse a coder's `gh pr merge` even after the reviewer has appro
 
 ## Spawn commands
 
-`/larceny:spawn-reviewer`, `/larceny:spawn-advisor` and `/larceny:spawn-teacher` start a persona as a background agent (Tbag, Linc and Sara, or your project's renamed replacements — see "Renaming Tbag, Linc or Sara without editing the plugin" in the README). See "Addressing a persona" and "Auto-spawn on first mention" in [agent-lifecycle.md](agent-lifecycle.md) for how to reach one afterward.
+`/larceny:spawn-reviewer`, `/larceny:spawn-advisor` and `/larceny:spawn-teacher` start a persona as a background agent (Amy, Yoda and Sara, or your project's renamed replacements; see "Renaming the reviewer, advisor or teacher" in the README). See "Addressing a persona" and "Auto-spawn on first mention" in [agent-lifecycle.md](agent-lifecycle.md) for how to reach one afterward.
 
 A spawn command's `description` frontmatter, the text shown in the `/` menu before you run it, is a static string shipped with the plugin. It cannot read a project's `.larceny/config.md` before you type the command, so it names the shipped default persona and role rather than a project's chosen replacement, even in a fully customized project. Once you run the command, what it tells you afterward (which agent it started, under which name) is accurate, because that step does read the config.
 
