@@ -3,7 +3,7 @@ description: Start the teacher (Sara, or your project's renamed teacher) as a pe
 argument-hint: "[project name, optional]"
 ---
 
-Start the teacher as a persistent agent. This command is named after the role, not the shipped default's name, because a project can rename this persona (see "Renaming Tbag, Linc or Sara without editing the plugin" in the README).
+Start the teacher as a persistent agent. This command is named after the role, not the shipped default's name, because a project can rename this persona (see "Renaming the reviewer, advisor or teacher" in the README).
 
 ## Resolve the persona first
 

@@ -6,7 +6,7 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fail=0
 bad() { echo "FAIL: $1"; fail=1; }
 
-expected="scofield tbag sucre mahone sheba whip"
+expected="scofield amy yoda sara sucre mahone sheba whip"
 for name in $expected; do
   [ -f "$root/agents/$name.md" ] || bad "agents/$name.md is missing"
 done
@@ -53,7 +53,7 @@ for phrase in 'exactly one ticket per dispatch' 'No approval, no merge' 'stop an
 done
 
 # The security skill is wired into every coder and the reviewer.
-for name in sucre mahone sheba whip tbag; do
+for name in sucre mahone sheba whip amy; do
   grep -q '^  - secure-coding$' "$root/agents/$name.md" 2>/dev/null || bad "$name: does not preload secure-coding"
 done
 
@@ -65,7 +65,7 @@ for name in teacher advisor coordinator; do
 done
 grep -q 'verbatim' "$root/skills/bring-in-personas/SKILL.md" 2>/dev/null || bad "skills/bring-in-personas/SKILL.md: missing the verbatim rule"
 # Shipped founding prompts in the agent files match the spawn commands.
-for pair in teacher:Sara advisor:Linc; do
+for pair in teacher:Sara advisor:Yoda; do
   role="${pair%%:*}"; who="${pair##*:}"
   ln="$(grep -m1 "^You are $who," "$root/commands/spawn-$role.md")"
   [ -n "$ln" ] && grep -qF "$ln" "$root/agents/$role.md" || bad "agents/$role.md: founding prompt differs from commands/spawn-$role.md"
