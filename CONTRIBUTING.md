@@ -35,7 +35,7 @@ If something fails on your setup, open an issue with:
 - the steps you took, the result you expected and the result you got
 - the error text, with any token or path that names you removed
 
-An issue that reports success on an untested setup helps as well.
+An issue that reports success on your setup helps as well.
 
 ## Add a skill
 
