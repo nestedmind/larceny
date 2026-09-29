@@ -90,7 +90,7 @@ The models are a recommendation. Onboarding lets you keep them, run everything o
 2. He turns it into tickets on the board and works out which ones can run at the same time.
 3. Each coder takes one ticket, builds it on its own branch with tests, and opens a pull request.
 4. Amy reviews the pull request against its ticket. The coder fixes what she raises.
-5. If a review reaches a third round, the coordinator steps in. At the fifth round, it comes to you.
+5. If a review reaches a third round, the coordinator steps in. At the fifth round, it is escalated to you.
 6. Once Amy passes it, the work merges and the coordinator reports back.
 
 ## Commands
