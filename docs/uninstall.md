@@ -1,7 +1,5 @@
 # Uninstall
 
-**Uninstalling has not been tested on this plugin.** The commands below come from the Claude Code plugin documentation ([Manage installed plugins](https://code.claude.com/docs/en/discover-plugins#manage-installed-plugins) and [Manage marketplaces](https://code.claude.com/docs/en/discover-plugins#manage-marketplaces)), and we checked each one against that page. Nobody has run them on this plugin yet. If one fails, please tell us on the [issues page](https://github.com/nestedmind/larceny/issues).
-
 Remove the plugin, inside Claude Code:
 
 ```

@@ -127,7 +127,7 @@ Or ask Claude (untested):
 
 > Uninstall Larceny. First list every file and setting it left in this project, using .larceny/config.md to find them, and wait for my OK before deleting anything.
 
-Uninstalling removes the plugin but not the files its work left in your projects: renamed persona files, `.larceny/`, worktrees, tokens and settings. The prompt above finds them for you. To do it by hand, follow [docs/uninstall.md](docs/uninstall.md). Uninstalling has not been tested on this plugin yet.
+Uninstalling removes the plugin but not the files its work left in your projects: renamed persona files, `.larceny/`, worktrees, tokens and settings. The prompt above finds them for you. To do it by hand, follow [docs/uninstall.md](docs/uninstall.md).
 
 ## Codex
 

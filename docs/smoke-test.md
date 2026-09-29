@@ -50,7 +50,7 @@ Use a machine, container or user account that has Claude Code and `gh` but no co
 
 ## Tear down (for the owner)
 
-Run this last, on the clean machine from Part 2. The boxes are unticked because uninstall has not been run on this plugin. The commands come from the Claude Code plugin docs and are listed in [uninstall.md](uninstall.md).
+Run this last, on the clean machine from Part 2. The commands come from the Claude Code plugin docs and are listed in [uninstall.md](uninstall.md).
 
 - [ ] Run `/plugin uninstall larceny@larceny`, then press Esc to close the panel. Type `/larceny:`. None of `onboard`, `wake-up`, `spawn-reviewer`, `spawn-advisor` or `spawn-teacher` is offered. If they still appear, run `/reload-plugins` and check again, and note that you had to.
 - [ ] Ask "List the agent types you can dispatch whose names start with `larceny:`". None of the twelve `larceny:` agents is listed.
