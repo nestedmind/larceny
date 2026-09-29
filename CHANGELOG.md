@@ -23,9 +23,8 @@
 
 ## 0.1.0
 
-- The plugin scaffold, MIT licence and manifests, with the installed name and owner set to Nestedmind (#14, #41, #42, #43, #51).
-- The workflow skills: code review, receiving review, review-comment triage, changelog and post-PR, test-driven development, systematic debugging, verification, worktrees, plain writing, planning, PR conventions, secure coding and adversarial review (#22, #23, #24, #25, #27, #30, #31, #32, #34, #35, #38, #46, #69).
-- The personas and agents: the coordinator, the reviewer, the bundled coders, and the spawn commands for the reviewer, advisor and teacher (#33, #36, #39, #49, #90).
-- The `/onboard` command and skill, with a first-run introduction, model choices, and a shared coder skill. Commands and skills follow a renamed coordinator, coders and personas, and the repo is renamed from inmates to larceny (#47, #59, #75, #78, #79, #85, #87, #98, #99, #102).
-- The reviewer posts real inline review comments, and a chat message to the coder does not count as a review (#97, #100).
-- Guardrails and docs: a check that fails a PR that changes shipped files without a version bump, commit identity set per command, one `<repo>-wt/` worktree container, and the README, limitations, smoke test, uninstall and identity-wiring docs (#17, #28, #21, #37, #40, #54, #58, #60, #62, #65, #67, #73, #92, #104).
+- The plugin and its manifests, licensed MIT (#14, #41).
+- Workflow skills for test-driven development, debugging, code review and adversarial review (#30, #32, #24, #36).
+- The coordinator, reviewer and coder personas, with an onboarding command and model choices (#33, #47, #90).
+- The coordinator and coders can be renamed (#78, #98).
+- Personas can use their own GitHub accounts, and the reviewer posts real inline review comments (#17, #97).
