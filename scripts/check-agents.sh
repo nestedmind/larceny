@@ -53,7 +53,7 @@ for phrase in 'exactly one ticket per dispatch' 'No approval, no merge' 'stop an
 done
 
 # The security skill is wired into every coder and the reviewer.
-for name in sucre mahone sheba whip amy; do
+for name in sucre mahone sheba whip amy reviewer; do
   grep -q '^  - secure-coding$' "$root/agents/$name.md" 2>/dev/null || bad "$name: does not preload secure-coding"
 done
 
@@ -70,6 +70,16 @@ for pair in teacher:Sara advisor:Yoda; do
   ln="$(grep -m1 "^You are $who," "$root/commands/spawn-$role.md")"
   [ -n "$ln" ] && grep -qF "$ln" "$root/agents/$role.md" || bad "agents/$role.md: founding prompt differs from commands/spawn-$role.md"
 done
+
+# The named files carry the same founding line as their spawn commands.
+for pair in teacher:sara:Sara advisor:yoda:Yoda; do
+  role="${pair%%:*}"; rest="${pair#*:}"; file="${rest%%:*}"; who="${rest##*:}"
+  ln="$(grep -m1 "^You are $who," "$root/commands/spawn-$role.md")"
+  [ -n "$ln" ] && grep -qF "$ln" "$root/agents/$file.md" || bad "agents/$file.md: founding prompt differs from commands/spawn-$role.md"
+done
+# The reviewer alias copies Amy's opening line.
+ln="$(grep -m1 '^You are Amy,' "$root/agents/amy.md")"
+[ -n "$ln" ] && grep -qF "$ln" "$root/agents/reviewer.md" 2>/dev/null || bad "agents/reviewer.md: shipped prompt differs from agents/amy.md"
 
 # The crew-resolution rule and every reader of it.
 "$root/scripts/check-crew-resolution.sh" || fail=1
