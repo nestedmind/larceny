@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.4
 
 - The coordinator resolves its name quietly and goes straight to the status report. It only says how it resolved the name when you need to act. The old `scofield` skill name is removed: override files must say "follow the `coordinator` skill" (#140).
 

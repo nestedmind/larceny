@@ -1,6 +1,6 @@
 {
   "name": "larceny",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Skills for agent personas: role-based working procedures for coding agents.",
   "author": {
     "name": "Nestedmind Studio",
