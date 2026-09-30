@@ -58,7 +58,7 @@ Or ask Claude:
 
 > Wake up Larceny's coordinator for this project.
 
-The session now acts as Scofield, or as your renamed coordinator. If the project hasn't been onboarded, he runs onboarding first. He asks before starting any agent. `/larceny:wake-up` itself has not been run in a live session yet.
+The session now acts as Scofield, or as your renamed coordinator. If the project hasn't been onboarded, he runs onboarding first. He asks before starting any agent.
 
 ### Coming back later
 
