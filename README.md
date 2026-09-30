@@ -15,7 +15,7 @@ The default crew is named after characters from the TV series Prison Break, with
 - Claude Code.
 - A git repository with at least one commit and a GitHub remote. Each coder works in its own worktree, so the repo needs a main branch to branch from.
 - The GitHub CLI, `gh`, signed in to an account with access to that repo.
-- A project board. GitHub Projects is tested. Linear through its MCP server is untested.
+- A project board. GitHub Projects and Linear (through its MCP server) are both tested.
 - Optional: a GitHub account per persona, so each one shows up under its own name. See [Persona accounts](#persona-accounts).
 - Optional: Discord, to talk to the coordinator from your phone.
 
@@ -30,7 +30,7 @@ Inside Claude Code:
 /plugin install larceny@larceny
 ```
 
-Or ask Claude (untested):
+Or ask Claude:
 
 > Install the Larceny plugin from the nestedmind/larceny marketplace using the claude plugin CLI, then tell me if I need to restart.
 
@@ -42,7 +42,7 @@ Inside Claude Code, in your project:
 /larceny:onboard
 ```
 
-Or ask Claude (untested):
+Or ask Claude:
 
 > Onboard this project with Larceny.
 
@@ -54,7 +54,7 @@ Onboarding checks your `gh` login, repo and access, asks who you are and how you
 /larceny:wake-up
 ```
 
-Or ask Claude (untested):
+Or ask Claude:
 
 > Wake up Larceny's coordinator for this project.
 
@@ -93,7 +93,7 @@ The models are a recommendation. Onboarding lets you keep them, run everything o
 
 ## Commands
 
-| Command | What it does | Or ask Claude (untested) |
+| Command | What it does | Or ask Claude |
 |---|---|---|
 | `/larceny:onboard` | Sets up the project | "Onboard this project with Larceny." |
 | `/larceny:wake-up` | Makes this session the coordinator | "Wake up Larceny's coordinator." |
@@ -121,7 +121,7 @@ Inside Claude Code:
 /plugin uninstall larceny@larceny
 ```
 
-Or ask Claude (untested):
+Or ask Claude:
 
 > Uninstall Larceny. First list every file and setting it left in this project, using .larceny/config.md to find them, and wait for my OK before deleting anything.
 
