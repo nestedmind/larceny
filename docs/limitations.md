@@ -46,7 +46,7 @@ The project must be a git repository with at least one commit, because each code
 
 ## Board steps are written for GitHub Projects
 
-Every board step in the plugin uses GitHub Projects commands. Linear through its MCP server has also been tested and works (the spike in [#72](https://github.com/nestedmind/larceny/issues/72)).
+Every board step in the plugin uses GitHub Projects commands (`gh project`): onboarding looks up board IDs with them, and coders and the coordinator move cards with them. The owner has tested running a board in Linear through its MCP server, and it works, but the skills don't yet say what to do differently with Linear. The write-up is pending in [#72](https://github.com/nestedmind/larceny/issues/72).
 
 ## Onboarding
 

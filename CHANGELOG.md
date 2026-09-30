@@ -4,7 +4,7 @@
 
 - The README is rewritten, with an org chart of the crew. Renaming and uninstall details moved to `docs/renaming.md` and `docs/uninstall.md`, and the GitHub-comment workaround moved to `docs/limitations.md` (#144).
 - The org chart in the README shows the new version, with the Owner at the top (#146).
-- The README no longer marks the "Or ask Claude" prompts as untested, and it and `docs/limitations.md` now say Linear through its MCP server is tested.
+- The README no longer marks the "Or ask Claude" prompts as untested. The README and `docs/limitations.md` now say Linear through its MCP server is tested (#154).
 
 ## 0.1.4
 
