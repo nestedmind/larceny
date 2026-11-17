@@ -6,7 +6,7 @@
 - The org chart in the README shows the new version, with the Owner at the top (#146).
 - The README no longer marks the "Or ask Claude" prompts as untested. The README and `docs/limitations.md` now say Linear through its MCP server is tested (#154).
 - The README no longer says `/larceny:wake-up` hasn't been run in a live session (#155).
-- Sara now teaches in bite-sized pieces by default: short replies, one piece at a time, a quick check after each, and the learner types the code in themselves (#157).
+- Sara now teaches in bite-sized pieces by default: short replies of her own (a reply she relays from another persona stays verbatim), one piece at a time, a quick check after each, and the learner types the code in themselves (#157, #159).
 
 ## 0.1.4
 
