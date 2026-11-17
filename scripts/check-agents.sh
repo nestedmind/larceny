@@ -64,18 +64,29 @@ for name in teacher advisor coordinator; do
   if grep -qiE 'verbatim|auto-spawn' "$root/agents/$name.md" 2>/dev/null; then bad "$name: duplicates bring-in-personas rules"; fi
 done
 grep -q 'verbatim' "$root/skills/bring-in-personas/SKILL.md" 2>/dev/null || bad "skills/bring-in-personas/SKILL.md: missing the verbatim rule"
-# Shipped founding prompts in the agent files match the spawn commands.
-for pair in teacher:Sara advisor:Yoda; do
-  role="${pair%%:*}"; who="${pair##*:}"
-  ln="$(grep -m1 "^You are $who," "$root/commands/spawn-$role.md")"
-  [ -n "$ln" ] && grep -qF "$ln" "$root/agents/$role.md" || bad "agents/$role.md: founding prompt differs from commands/spawn-$role.md"
-done
-
-# The named files carry the same founding line as their spawn commands.
-for pair in teacher:sara:Sara advisor:yoda:Yoda; do
-  role="${pair%%:*}"; rest="${pair#*:}"; file="${rest%%:*}"; who="${rest##*:}"
-  ln="$(grep -m1 "^You are $who," "$root/commands/spawn-$role.md")"
-  [ -n "$ln" ] && grep -qF "$ln" "$root/agents/$file.md" || bad "agents/$file.md: founding prompt differs from commands/spawn-$role.md"
+# Each founding prompt exists in three copies: the spawn command (inside a
+# ~~~ block), the named agent file and the generic alias (body or ~~~ block).
+# Compare the whole prompt, from the "You are <name>," line up to the first
+# line that is not part of it, and name every file that differs. That line is
+# "Project for this conversation:" (spawn command) or the closing ~~~ (spawn
+# command and alias). The "When you run as the main session," footer of the
+# named agent files is skipped, not a stop, so text after it is still compared.
+# Blank lines at either end do not count. No copy is allowed to differ on purpose.
+prompt_of() { # file persona-name
+  awk -v who="$2" '
+    !on && index($0, "You are " who ",") == 1 { on = 1 }
+    on && index($0, "When you run as the main session,") == 1 { next }
+    on && (index($0, "Project for this conversation:") == 1 || $0 == "~~~") { exit }
+    on { print }
+  ' "$1" | sed -e :a -e '/^[[:space:]]*$/{$d;N;ba' -e '}'
+}
+for set in teacher:sara:Sara advisor:yoda:Yoda; do
+  role="${set%%:*}"; rest="${set#*:}"; file="${rest%%:*}"; who="${rest##*:}"
+  ref="$(prompt_of "$root/commands/spawn-$role.md" "$who")"
+  [ -n "$ref" ] || { bad "commands/spawn-$role.md: no founding prompt found"; continue; }
+  for copy in "agents/$file.md" "agents/$role.md"; do
+    [ "$(prompt_of "$root/$copy" "$who")" = "$ref" ] || bad "$copy: founding prompt differs from commands/spawn-$role.md"
+  done
 done
 # The reviewer alias copies Amy's opening line.
 ln="$(grep -m1 '^You are Amy,' "$root/agents/amy.md")"
