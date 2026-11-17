@@ -68,14 +68,15 @@ grep -q 'verbatim' "$root/skills/bring-in-personas/SKILL.md" 2>/dev/null || bad 
 # ~~~ block), the named agent file and the generic alias (body or ~~~ block).
 # Compare the whole prompt, from the "You are <name>," line up to the first
 # line that is not part of it, and name every file that differs. That line is
-# "Project for this conversation:" (spawn command), the closing ~~~ (spawn
-# command and alias) or "When you run as the main session," (named agent file's
-# footer, which is not part of the prompt). Blank lines at either end do not
-# count. No copy is allowed to differ on purpose.
+# "Project for this conversation:" (spawn command) or the closing ~~~ (spawn
+# command and alias). The "When you run as the main session," footer of the
+# named agent files is skipped, not a stop, so text after it is still compared.
+# Blank lines at either end do not count. No copy is allowed to differ on purpose.
 prompt_of() { # file persona-name
   awk -v who="$2" '
     !on && index($0, "You are " who ",") == 1 { on = 1 }
-    on && (index($0, "Project for this conversation:") == 1 || $0 == "~~~" || index($0, "When you run as the main session,") == 1) { exit }
+    on && index($0, "When you run as the main session,") == 1 { next }
+    on && (index($0, "Project for this conversation:") == 1 || $0 == "~~~") { exit }
     on { print }
   ' "$1" | sed -e :a -e '/^[[:space:]]*$/{$d;N;ba' -e '}'
 }
